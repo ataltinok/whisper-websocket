@@ -1,0 +1,5 @@
+numpy==1.26.4
+openai_whisper==20231117
+PyAudio==0.2.14
+scipy==1.13.0
+websockets==12.0
