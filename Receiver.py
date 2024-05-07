@@ -28,7 +28,7 @@ class TranscriptionServer:
         # Thread safe Queue for passing data from the threaded recording callback.
         self.data_queue = Queue()
 
-        # Transcription model
+        # Transcription model (small, medium, large, large-v2, large-v3)
         print("Downloading whisper model:", model)
         #self.audio_model = WhisperModel(model, device="cpu", compute_type="int8")
         self.audio_model = whisper.load_model(model)
@@ -77,7 +77,7 @@ class TranscriptionServer:
                 await websocket.send("\n".join(clean_segments))
                 """
 
-                # Vanilla Whisper implementation
+                # Whisper implementation
                 result = self.audio_model.transcribe(np_audio_data, fp16=False, initial_prompt="".join(self.transcription))
                 text = result["text"]
                 self.transcription.append(text)
@@ -88,14 +88,12 @@ class TranscriptionServer:
             print("Connection terminated")
 
 
-
-
 async def main():
     try:
         server = TranscriptionServer("medium")
         print("\nReady to operate. Deploying server...")
-
-        ws = await websockets.serve(server.message_recv, "10.128.0.4", 3389)
+        server_uri = "XXX.XXX.XXX.XXX"
+        ws = await websockets.serve(server.message_recv, server_uri, 3389) 
         print("Ready for connections.")
 
         await ws.wait_closed()
