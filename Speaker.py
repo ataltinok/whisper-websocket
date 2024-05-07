@@ -19,7 +19,7 @@ class Speaker:
 		# the endpoint we're going to hit
 		self.URL = URL
 		self.transcription = list()
-		self.num_iterations = int(RATE / FRAMES_PER_BUFFER * CHUNK_DURATION) # Sends CHUNK_SECONDS second chunks
+		self.num_iterations = int(RATE / FRAMES_PER_BUFFER * CHUNK_DURATION) # Sends CHUNK_SECONDS second chunks, i.e. the audio is transcribed every CHUNK_SECONDS seconds.
 
 	def add_line(self, text):
 		self.transcription.append(text)
@@ -100,7 +100,8 @@ class Speaker:
 
 
 async def main():
-    client = Speaker("ws://34.116.198.213:3389", 5)
+	server_uri = "ws://XXX.XXX.XXX.XXX:3389" # Port 3389 is commonly used for ws connections
+    client = Speaker(server_uri, 5)
     try:
         await client.send_receive()
     except KeyboardInterrupt:
